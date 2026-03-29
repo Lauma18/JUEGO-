@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Juego 3D Sustantivos tipo Minecraft</title>
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    #questionBox {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      font-family: Arial;
+    }
+    button {
+      margin: 5px;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div id="questionBox">
+  <h3 id="question">Cargando...</h3>
+  <div id="answers"></div>
+</div>
+
+<a-scene>
+  <!-- Cámara tipo jugador -->
+  <a-camera position="0 1.6 5" wasd-controls look-controls></a-camera>
+
+  <!-- Suelo tipo minecraft -->
+  <a-plane rotation="-90 0 0" width="20" height="20" color="#7CFC00"></a-plane>
+
+  <!-- Bloques tipo minecraft -->
+  <a-box position="0 0.5 -3" color="green"></a-box>
+  <a-box position="2 0.5 -4" color="brown"></a-box>
+  <a-box position="-2 0.5 -4" color="gray"></a-box>
+  <a-box position="1 0.5 -6" color="blue"></a-box>
+
+  <!-- Luz -->
+  <a-light type="ambient" intensity="0.8"></a-light>
+  <a-light type="directional" position="1 1 0"></a-light>
+</a-scene>
+
+<script>
+const questions = [
+  { q: "¿Cuál es un sustantivo?", a: ["correr", "perro", "rápido"], correct: 1 },
+  { q: "¿Cuál es un sustantivo propio?", a: ["ciudad", "Colombia", "feliz"], correct: 1 },
+  { q: "Selecciona un sustantivo común", a: ["mesa", "Bogotá", "alto"], correct: 0 },
+  { q: "¿Cuál es un objeto?", a: ["silla", "correr", "bonito"], correct: 0 },
+  { q: "¿Cuál es un animal?", a: ["gato", "azul", "cantar"], correct: 0 },
+  { q: "¿Cuál es un lugar?", a: ["escuela", "rápido", "saltar"], correct: 0 },
+  { q: "¿Cuál es un nombre propio?", a: ["Juan", "perro", "grande"], correct: 0 },
+  { q: "¿Cuál es un sustantivo abstracto?", a: ["amor", "mesa", "correr"], correct: 0 },
+  { q: "¿Cuál es un objeto de la casa?", a: ["televisor", "saltar", "rápido"], correct: 0 },
+  { q: "¿Cuál es un sustantivo plural?", a: ["perros", "correr", "feliz"], correct: 0 }
+];
+
+let current = 0;
+
+function loadQuestion() {
+  const q = questions[current];
+  document.getElementById("question").innerText = q.q;
+  const answersDiv = document.getElementById("answers");
+  answersDiv.innerHTML = "";
+
+  q.a.forEach((ans, index) => {
+    const btn = document.createElement("button");
+    btn.innerText = ans;
+    btn.onclick = () => checkAnswer(index);
+    answersDiv.appendChild(btn);
+  });
+}
+
+function checkAnswer(index) {
+  if (index === questions[current].correct) {
+    alert("¡Correcto! 🎉");
+  } else {
+    alert("Incorrecto 😢");
+  }
+
+  current++;
+  if (current < questions.length) {
+    loadQuestion();
+  } else {
+    alert("¡Juego terminado! 🎮");
+  }
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
